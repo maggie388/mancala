@@ -1,0 +1,53 @@
+@use '../../partials/mixins' as *;
+
+.game-board {
+    display: flex;
+    justify-content: space-between;
+    height: 19vw;
+    padding: 20px;
+    margin: 10px auto;
+    border: 3px solid black;
+    border-radius: 10px;
+    
+    &__store {
+        @include pit;
+        width: 10%;
+    }
+
+    &__pit-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 75%;
+        height: 100%;
+    }
+
+    &__player-pits {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: space-between;
+        width: 100%;
+        height: 45%;
+    }
+
+    &__pit {
+        @include pit;
+        width: 14%;
+        height: 100%;
+    }
+
+    &__pebble {
+        width: 20%;
+        height: 20%;
+        max-width: 15px;
+        max-height: 15px;
+        border-radius: 50%;
+        margin: 2px;
+        background-color:black;
+    }
+
+    &__count {
+        font-weight: bold;
+    }
+}
