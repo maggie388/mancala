@@ -1,4 +1,3 @@
-import React from 'react';
 import './TurnTracker.scss';
 
 const TurnTracker = ({ currentPlayer, message }) => {

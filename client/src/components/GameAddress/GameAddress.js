@@ -1,5 +1,7 @@
 import './GameAddress.scss';
 import { useRef } from 'react';
+
+// assets
 import copyIcon from '../../assets/icon-copy.svg';
 
 const GameAddress = () => {

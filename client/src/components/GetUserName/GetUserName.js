@@ -1,5 +1,3 @@
-import React from 'react';
-
 const GetUserName = ({ setUserName, players, setPlayers }) => {
     const onSubmit = (e) => {
         e.preventDefault();

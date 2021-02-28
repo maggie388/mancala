@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { socket } from '../../connections/socket';
 import { useParams } from 'react-router-dom';
 
-import GetUserName from '../../components/GetUserName/GetUserName';
+// components
 import GameBoard from '../../components/GameBoard/GameBoard';
 import Players from '../../components/Players/Players';
 

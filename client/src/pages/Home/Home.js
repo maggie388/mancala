@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { socket } from '../../connections/socket';
 
@@ -49,8 +49,7 @@ const Home = ({ setUsername }) => {
                         <button>Create New Game</button>
                     </form>
                 </div>
-            }
-            
+            }  
         </>
     );
 }

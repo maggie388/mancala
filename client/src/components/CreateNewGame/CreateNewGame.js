@@ -3,11 +3,11 @@ import { v4 as uuid } from 'uuid';
 import { socket } from '../../connections/socket';
 import { Redirect } from 'react-router-dom';
 
+// components
 import NewGameButton from '../../components/NewGameButton/NewGameButton';
 
 const CreateNewGame = () => {
     const [gameId, setGameId] = useState('');
-
   
     const onCreateNewGame = () => {
         const gameId = uuid();
