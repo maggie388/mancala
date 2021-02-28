@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './GameBoard.scss';
 
+// compoenents
 import Player from '../Players/Players';
 import TurnTracker from '../TurnTracker/TurnTracker';
+import GameAddress from '../GameAddress/GameAddress';
 
 const GameBoard = ({ players }) => {
 
@@ -120,6 +123,7 @@ const GameBoard = ({ players }) => {
 
     return (
         <>
+        <GameAddress />
         <TurnTracker message={message} />
         <div className='game-board'>
             <div className='game-board__store'>
