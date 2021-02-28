@@ -4,15 +4,15 @@ import './TurnTracker.scss';
 const TurnTracker = ({ message }) => {
     return (
         <div className='turn-tracker'>
-            <div>
-                <h3>player one</h3>
+            <div className='turn-tracker__player turn-tracker__player--active'>
+                <h3 className='turn-tracker__player-heading'>player one</h3>
                 <div>maggie</div>
             </div>
-            <div>
+            <div className='turn-tracker__message'>
                 {message}
             </div>
-            <div>
-                <h3>player two</h3>
+            <div className='turn-tracker__player'>
+                <h3 className='turn-tracker__player-heading'>player two</h3>
                 <p>jeff</p>
             </div>
         </div>
