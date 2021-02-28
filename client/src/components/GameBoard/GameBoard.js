@@ -6,6 +6,7 @@ import './GameBoard.scss';
 import Player from '../Players/Players';
 import TurnTracker from '../TurnTracker/TurnTracker';
 import GameAddress from '../GameAddress/GameAddress';
+import FinalScore from '../FinalScore/FinalScore';
 
 const GameBoard = ({ players }) => {
 
@@ -29,6 +30,7 @@ const GameBoard = ({ players }) => {
     const [gameInProgress, setGameInProgress] = useState(true);
     const [isMyTurn, setIsMyTurn] = useState(true);
     const [message, setMessage] = useState(`${playersObj[currentPlayer]} goes first`);
+    const [finalScore, setFinalScore] = useState([0, 0]);
 
     // game tracking
     const currentPlayerPits = currentPlayer === 'playerOne' ? [0, 1, 2, 3, 4, 5] : [7, 8, 9, 10, 11, 12];
@@ -118,7 +120,13 @@ const GameBoard = ({ players }) => {
     }, [currentPlayer]);
 
     useEffect(() => {
-        !gameInProgress && setMessage('Game Over!');
+        if (!gameInProgress) {
+            const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
+            const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
+            const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
+            setFinalScore([playerOneScore, playerTwoScore]);
+            setMessage(`Game Over! ${winner}`);
+        }
     }, [gameInProgress]);
 
     return (
@@ -211,6 +219,7 @@ const GameBoard = ({ players }) => {
                 {new Array(pitValues[13]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
             </div>
         </div>
+        {!gameInProgress && <FinalScore finalScore={finalScore} /> }
         </>
     );
 };
