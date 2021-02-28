@@ -35,6 +35,12 @@
         @include pit;
         width: 14%;
         height: 100%;
+
+        &--active {
+            @extend .game-board__pit;
+            @include active-pit-shadow;
+            
+        }
     }
 
     &__pebble {
