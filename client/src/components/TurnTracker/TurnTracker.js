@@ -1,17 +1,17 @@
 import React from 'react';
 import './TurnTracker.scss';
 
-const TurnTracker = ({ message }) => {
+const TurnTracker = ({ currentPlayer, message }) => {
     return (
         <div className='turn-tracker'>
-            <div className='turn-tracker__player turn-tracker__player--active'>
+            <div className={currentPlayer === 'playerOne' ? 'turn-tracker__player--active' : 'turn-tracker__player'}>
                 <h3 className='turn-tracker__player-heading'>player one</h3>
                 <div>maggie</div>
             </div>
             <div className='turn-tracker__message'>
                 {message}
             </div>
-            <div className='turn-tracker__player'>
+            <div className={currentPlayer === 'playerTwo' ? 'turn-tracker__player--active' : 'turn-tracker__player'}>
                 <h3 className='turn-tracker__player-heading'>player two</h3>
                 <p>jeff</p>
             </div>
