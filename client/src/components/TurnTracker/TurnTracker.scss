@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 4rem;
+    height: 6rem;
     margin: 0 auto;
     margin-bottom: 2rem;
     text-align: center;
@@ -11,11 +11,10 @@
 
     &__player {
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
+        width: 20%;
         height: 100%;
-        padding: 0 2rem;
 
         &--active {
             @extend .turn-tracker__player;
@@ -23,9 +22,21 @@
         }
     }
 
+    &__name-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
     &__player-heading {
         margin-bottom: .25rem;
         font-size: .9rem;
+    }
+
+    &__score {
+        // width: 40%;
     }
 
     &__message {

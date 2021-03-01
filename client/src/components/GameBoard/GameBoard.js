@@ -130,7 +130,12 @@ const GameBoard = ({ players }) => {
     return (
         <>
         <GameAddress />
-        <TurnTracker currentPlayer={currentPlayer} gameInProgress ={gameInProgress} message={message} />
+        <TurnTracker 
+            currentPlayer={currentPlayer} 
+            gameInProgress ={gameInProgress} 
+            message={message} 
+            finalScore={finalScore}
+        />
         <div className='game-board'>
             <div className='game-board__store'>
                 {new Array(pitValues[6]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
@@ -217,7 +222,6 @@ const GameBoard = ({ players }) => {
                 {new Array(pitValues[13]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
             </div>
         </div>
-        {!gameInProgress && <FinalScore finalScore={finalScore} /> }
         </>
     );
 };
