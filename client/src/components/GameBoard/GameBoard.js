@@ -138,37 +138,37 @@ const GameBoard = ({ players }) => {
             <div className='game-board__pit-wrapper'>
                 <div className='game-board__player-pits'>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn  && gameInProgress? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(5)}
                         >
                         {new Array(pitValues[5]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(4)}
                         >
                         {new Array(pitValues[4]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(3)}
                         >
                         {new Array(pitValues[3]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(2)}
                         >
                         {new Array(pitValues[2]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(1)}
                         >
                         {new Array(pitValues[1]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(0)}
                         >
                         {new Array(pitValues[0]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
@@ -176,37 +176,37 @@ const GameBoard = ({ players }) => {
                 </div>
                 <div className='game-board__player-pits'>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(7)}
                         >
                         {new Array(pitValues[7]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(8)}
                         >
                         {new Array(pitValues[8]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(9)}
                         >
                         {new Array(pitValues[9]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(10)}
                         >
                         {new Array(pitValues[10]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(11)}
                         >
                         {new Array(pitValues[11]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
                     </div>
                     <div 
-                        className={currentPlayer === 'playerTwo' && isMyTurn ? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerTwo' && isMyTurn && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerTwoMove(12)}
                         >
                         {new Array(pitValues[12]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
