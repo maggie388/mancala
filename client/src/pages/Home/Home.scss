@@ -1,0 +1,21 @@
+.new-game-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+
+    &__label {
+        margin-right: 1rem;
+    }
+
+    &__input {
+        width: 30%;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+    }
+
+    &__button {
+        padding: 0.5rem 1rem;
+    }
+}

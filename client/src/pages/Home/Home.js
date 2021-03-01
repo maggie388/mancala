@@ -1,3 +1,4 @@
+import './Home.scss';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
@@ -31,6 +32,11 @@ const Home = ({ setUsername }) => {
                 gameId ? 
                 <Redirect to={`/game/${gameId}`}></Redirect> : 
                 <div>
+                    <form className='new-game-form' onSubmit={onCreateNewGame}>
+                        <label className='new-game-form__label' htmlFor='username'>Add your name to get started</label>
+                        <input className='new-game-form__input' type='text' name='username' />
+                        <button className='new-game-form__button'>Create New Game</button>
+                    </form>
                     <h2>Instructions</h2>
                     <ol>
                         <li>Pick any one of the pockets on your side of the board.</li>
@@ -43,11 +49,6 @@ const Home = ({ setUsername }) => {
                         <li>The player who still has pieces on his/her side of the board when the game ends captures all of those pieces.</li>
                         <li>Count all the pieces in each Mancala. The winner is the player with the most pieces.</li>
                     </ol>
-                    <form onSubmit={onCreateNewGame}>
-                        <label htmlFor='username'>Add your name to get started</label>
-                        <input type='text' name='username' />
-                        <button>Create New Game</button>
-                    </form>
                 </div>
             }  
         </>

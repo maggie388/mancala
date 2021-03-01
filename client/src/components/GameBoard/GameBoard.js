@@ -4,7 +4,6 @@ import './GameBoard.scss';
 // compoenents
 import TurnTracker from '../TurnTracker/TurnTracker';
 import GameAddress from '../GameAddress/GameAddress';
-import FinalScore from '../FinalScore/FinalScore';
 
 const GameBoard = ({ players }) => {
 

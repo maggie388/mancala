@@ -13,7 +13,7 @@ const App = () => {
   return (
     <main className='app'>
       <h1 className='app__heading'>Mancala</h1>
-      <GameBoard players={["maggie", "jeff"]} />
+      {/* <GameBoard players={["maggie", "jeff"]} /> */}
       <Router>
         <Switch>
           <Route exact path='/'>
