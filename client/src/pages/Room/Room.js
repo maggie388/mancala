@@ -4,16 +4,10 @@ import { useParams } from 'react-router-dom';
 
 // components
 import GameBoard from '../../components/GameBoard/GameBoard';
-import Players from '../../components/Players/Players';
 import GameAddress from '../../components/GameAddress/GameAddress';
 import TurnTracker from '../../components/TurnTracker/TurnTracker';
 
-const Room = ({ username, setUsername }) => {
-    // const playersObj = {
-    //     playerOne: 'maggie',
-    //     playerTwo: 'jeff'
-    // }
-    
+const Room = ({ username, setUsername }) => {    
     // state
     const [players, setPlayers] = useState({});
     const [isRoomFull, setIsRoomFull] = useState(false);
@@ -56,6 +50,7 @@ const Room = ({ username, setUsername }) => {
         socket.on('playerJoinsRoom', (update) => {
             if (update.success) {
                 setPlayers({playerOne: update.players[0], playerTwo: update.players[1]});
+                setMessage('ready to start game');
                 return;
             }
             setIsRoomFull(true);
@@ -92,7 +87,6 @@ const Room = ({ username, setUsername }) => {
     return (
         <div>
             <GameAddress />
-            <h1>{`Welcome to your game ${username}!`}</h1>
             <TurnTracker 
                 players={players}
                 gameInProgress={gameInProgress} 
@@ -101,7 +95,6 @@ const Room = ({ username, setUsername }) => {
                 message={message} 
                 finalScore={finalScore}
             />
-            {players.length > 0 ? <Players players={players} /> : ''}
             {players.length === 2 && gameInProgress === false ? <button onClick={startGame}>Start Game</button> : ''}
             {gameInProgress && 
             <GameBoard 
