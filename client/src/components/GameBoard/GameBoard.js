@@ -3,9 +3,9 @@ import './GameBoard.scss';
 
 // compoenents
 import TurnTracker from '../TurnTracker/TurnTracker';
-import GameAddress from '../GameAddress/GameAddress';
 
-const GameBoard = ({ players }) => {
+
+const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
 
     /*
     -----------------------------------------
@@ -24,7 +24,7 @@ const GameBoard = ({ players }) => {
     // state
     const [pitValues, setPitValues] = useState([...startingValues]);
     const [currentPlayer, setCurrentPlayer] = useState('playerOne');
-    const [gameInProgress, setGameInProgress] = useState(true);
+    // const [gameInProgress, setGameInProgress] = useState(true);
     const [isMyTurn, setIsMyTurn] = useState(true);
     const [message, setMessage] = useState(`${playersObj[currentPlayer]} goes first`);
     const [finalScore, setFinalScore] = useState([0, 0]);
@@ -128,7 +128,7 @@ const GameBoard = ({ players }) => {
 
     return (
         <>
-        <GameAddress />
+        
         <TurnTracker 
             currentPlayer={currentPlayer} 
             gameInProgress ={gameInProgress} 

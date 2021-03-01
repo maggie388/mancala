@@ -5,12 +5,13 @@ import { useParams } from 'react-router-dom';
 // components
 import GameBoard from '../../components/GameBoard/GameBoard';
 import Players from '../../components/Players/Players';
+import GameAddress from '../../components/GameAddress/GameAddress';
 
 const Room = ({ username, setUsername }) => {
     // state
     const [players, setPlayers] = useState([]);
     const [isRoomFull, setIsRoomFull] = useState(false);
-    const [gameStarted, setGameStarted] = useState(false);
+    const [gameInProgress, setGameInProgress] = useState(false);
 
     // react-router-dom params
     const { gameId } = useParams();
@@ -28,7 +29,7 @@ const Room = ({ username, setUsername }) => {
 
     const startGame = () => {
         socket.emit('startGame', {gameId});
-        setGameStarted(true);
+        setGameInProgress(true);
     }
 
     // execute when component mounts
@@ -47,7 +48,7 @@ const Room = ({ username, setUsername }) => {
         });
 
         socket.on('startGame', () => {
-            setGameStarted(true);
+            setGameInProgress(true);
         });
 
         socket.on('status', (update) => {
@@ -76,11 +77,17 @@ const Room = ({ username, setUsername }) => {
 
     return (
         <div>
+            <GameAddress />
             <h1>{`Welcome to your game ${username}!`}</h1>
             {players.length === 1 ? 'Waiting for opponent' : 'You can now start the game'}
             {players.length > 0 ? <Players players={players} /> : ''}
-            {players.length === 2 && gameStarted === false ? <button onClick={startGame}>Start Game</button> : ''}
-            {gameStarted && <GameBoard players={players} />}
+            {players.length === 2 && gameInProgress === false ? <button onClick={startGame}>Start Game</button> : ''}
+            {gameInProgress && 
+            <GameBoard 
+                players={players} 
+                gameInProgress={gameInProgress} 
+                setGameInProgress={setGameInProgress} 
+            />}
 
         </div>
     );

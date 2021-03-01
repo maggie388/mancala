@@ -12,8 +12,8 @@ const GameAddress = () => {
     }
 
     return (
-        <div class="game-address">
-            <input className='game-address__input' type='text' ref={inputEl} value={window.location.href} />
+        <div className="game-address">
+            <input className='game-address__input' type='text' ref={inputEl} value={window.location.href} readOnly />
             <button className='game-address__button' onClick={handleClick}>
                 <img src={copyIcon} alt='copy' />
             </button>
