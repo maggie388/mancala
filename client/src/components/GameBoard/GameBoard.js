@@ -5,7 +5,7 @@ import './GameBoard.scss';
 import TurnTracker from '../TurnTracker/TurnTracker';
 
 
-const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
+const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, setCurrentPlayer, setMessage, setFinalScore }) => {
 
     /*
     -----------------------------------------
@@ -16,18 +16,10 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
     */
     
     const startingValues = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
-    const playersObj = {
-        playerOne: 'maggie',
-        playerTwo: 'jeff'
-    }
 
     // state
     const [pitValues, setPitValues] = useState([...startingValues]);
-    const [currentPlayer, setCurrentPlayer] = useState('playerOne');
-    // const [gameInProgress, setGameInProgress] = useState(true);
     const [isMyTurn, setIsMyTurn] = useState(true);
-    const [message, setMessage] = useState(`${playersObj[currentPlayer]} goes first`);
-    const [finalScore, setFinalScore] = useState([0, 0]);
 
     // game tracking
     const currentPlayerPits = currentPlayer === 'playerOne' ? [0, 1, 2, 3, 4, 5] : [7, 8, 9, 10, 11, 12];
@@ -94,7 +86,7 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
 
         // check next turn condition
         if (nextIndex - 1 === currentPlayerStore) {
-            setMessage(`The last pebble was placed in ${playersObj[currentPlayer]}'s mancala. ${playersObj[currentPlayer]} goes again!`);
+            setMessage(`The last pebble was placed in ${players[currentPlayer]}'s mancala. ${players[currentPlayer]} goes again!`);
             return;
         }
         setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
@@ -113,7 +105,7 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
     }
 
     useEffect(() => {
-        setMessage(`it's ${playersObj[currentPlayer]}'s turn`)
+        setMessage(`it's ${players[currentPlayer]}'s turn`)
     }, [currentPlayer]);
 
     useEffect(() => {
@@ -129,12 +121,13 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress }) => {
     return (
         <>
         
-        <TurnTracker 
+        {/* <TurnTracker 
+            players={players}
             currentPlayer={currentPlayer} 
             gameInProgress ={gameInProgress} 
             message={message} 
             finalScore={finalScore}
-        />
+        /> */}
         <div className='game-board'>
             <div className='game-board__store'>
                 {new Array(pitValues[6]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
