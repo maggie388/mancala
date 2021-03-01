@@ -32,11 +32,12 @@
 
     &__player-heading {
         margin-bottom: .25rem;
-        font-size: .9rem;
+        font-size: 1rem;
     }
 
     &__score {
-        // width: 40%;
+        padding: 0 1rem;
+        font-size: 3rem;
     }
 
     &__message {
