@@ -19,7 +19,6 @@ const Room = ({ username, setUsername }) => {
     const [message, setMessage] = useState(`waiting for opponent`);
     const [finalScore, setFinalScore] = useState([0, 0]);
 
-
     // react-router-dom params
     const { gameId } = useParams();
 
@@ -41,7 +40,6 @@ const Room = ({ username, setUsername }) => {
 
     // execute when component mounts
     useEffect(() => {
-        console.log(username);
         if (username) {
             setPlayers({playerOne: username});
         }
@@ -58,6 +56,8 @@ const Room = ({ username, setUsername }) => {
 
         socket.on('startGame', () => {
             setGameInProgress(true);
+            setGameStarted(true);
+            setMessage(`it's ${players.playerOne}'s turn`);
         });
 
         socket.on('status', (update) => {
@@ -95,7 +95,7 @@ const Room = ({ username, setUsername }) => {
                 message={message} 
                 finalScore={finalScore}
             />
-            {players.length === 2 && gameInProgress === false ? <button onClick={startGame}>Start Game</button> : ''}
+            {players.playerTwo && !gameInProgress && <button onClick={startGame}>Start Game</button>}
             {gameInProgress && 
             <GameBoard 
                 players={players} 

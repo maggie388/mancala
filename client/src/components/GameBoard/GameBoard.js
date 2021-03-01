@@ -120,14 +120,6 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, 
 
     return (
         <>
-        
-        {/* <TurnTracker 
-            players={players}
-            currentPlayer={currentPlayer} 
-            gameInProgress ={gameInProgress} 
-            message={message} 
-            finalScore={finalScore}
-        /> */}
         <div className='game-board'>
             <div className='game-board__store'>
                 {new Array(pitValues[6]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}
