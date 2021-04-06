@@ -84,7 +84,6 @@ const Room = ({ nickname, setNickname, isCreator }) => {
             setMessage(gameData.message);
             setCurrentPlayer(gameData.currentPlayer)
             if (gameData.fromSocket !== mySocketId && gameData.switchTurn) {
-                // setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
                 setIsMyTurn(true);
             }
         });

@@ -65,7 +65,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
                 nextIndex++;
             }
         }
-        // setPitValues(pitValuesCopy);
 
         // check for bonus pebbles condition
         if (currentPlayerPits.includes(nextIndex - 1) && pitValuesProxy[nextIndex -1] === 1) {
@@ -75,7 +74,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
             let opposingPitContains = pitValuesProxy[oposingPits[nextIndex - 1]];
             pitValuesProxy[currentPlayerStore] += opposingPitContains;
             pitValuesProxy[oposingPits[nextIndex - 1]] = 0;
-            // setPitValues(pitValuesCopy);
         }
 
         // check game end condition
@@ -87,7 +85,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
         }
 
         // check next turn condition
-        
         if (nextIndex - 1 === currentPlayerStore) {
             messageProxy = `The last pebble was placed in ${players[currentPlayer]}'s mancala. ${players[currentPlayer]} goes again!`;
             switchTurn = false;
@@ -103,7 +100,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
                 fromSocket: mySocketId, 
                 currentPlayer: switchTurn ? currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne' : currentPlayer
                });
-            // setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
             if (switchTurn) {
                 setIsMyTurn(false);
             }
