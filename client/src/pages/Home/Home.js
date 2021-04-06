@@ -5,25 +5,26 @@ import { v4 as uuid } from 'uuid';
 import { socket } from '../../connections/socket';
 
 
-const Home = ({ setUsername }) => {
+const Home = ({ setNickname, setIsCreator }) => {
     // state
     const [gameId, setGameId] = useState('');
 
-    const onCreateNewGame = (e) => {
+    const createNewGame = (e) => {
         e.preventDefault();
 
-        const newGameId = uuid();
-        const newUsername = e.target.username.value;
+        const id = uuid();
+        const nickname = e.target.nickname.value;
 
-        // update state
-        setGameId(newGameId);
-        setUsername(newUsername);
+        setGameId(id);
+        setNickname(nickname);
+        setIsCreator(true);
 
-        console.log('gameId ::: ', newGameId);
-        console.log('username ::: ', newUsername);
+        const gameData = {
+            gameId: id,
+            nickname: nickname
+        }
         
-        // call createNewGame function on server
-        socket.emit('createNewGame', { gameId: newGameId, username: newUsername });
+        socket.emit('createNewGame', gameData);
     }
 
     return (
@@ -32,9 +33,9 @@ const Home = ({ setUsername }) => {
                 gameId ? 
                 <Redirect to={`/game/${gameId}`}></Redirect> : 
                 <div>
-                    <form className='new-game-form' onSubmit={onCreateNewGame}>
-                        <label className='new-game-form__label' htmlFor='username'>Add your name to get started</label>
-                        <input className='new-game-form__input' type='text' name='username' />
+                    <form className='new-game-form' onSubmit={createNewGame}>
+                        <label className='new-game-form__label' htmlFor='nickname'>Add your name to get started</label>
+                        <input className='new-game-form__input' type='text' name='nickname' />
                         <button className='new-game-form__button'>Create New Game</button>
                     </form>
                     <h2>Instructions</h2>

@@ -2,6 +2,8 @@ let io;
 let gameSocket;
 let gamesInProgress = [];
 
+const _ = require('lodash');
+
 const initializeGame = (sio, client) => {
     console.log('initialize game');
     io = sio;
@@ -16,6 +18,8 @@ const initializeGame = (sio, client) => {
 
     gameSocket.on('startGame', startGame);
 
+    gameSocket.on('makeMove', makeMove);
+
     gameSocket.on('disconnect', onDisconnect);
 };
 
@@ -23,55 +27,58 @@ exports.initializeGame = initializeGame;
 
 
 
-function createNewGame(data) {
-    this.nickname = data.username;
-    console.log('set nickname to ::: ', this.nickname);
+function createNewGame(gameData) {
+    console.log('Create New Game');
 
-    this.join(data.gameId);
-    console.log('create and join game with id: ', data.gameId);
+    this.nickname = gameData.nickname;
+
+    this.join(gameData.gameId);
 
     // this.id is the same as gameSocket.id
-    // send data back to client
-    this.emit('createNewGame', { gameId: data.gameId, mySocketId: this.id });
+    gameData.socketId = this.id;
+    
+    this.emit('createNewGame', gameData);
+    io.sockets.in(gameData.gameId).emit('setGameData', gameData);
 }
 
-function playerJoinsRoom(data) {
-    console.log('Player joins room with id ::: ', data.gameId)
-    console.log('Games in progress ::: ', gamesInProgress.length);
+function playerJoinsRoom(gameData) {
+    console.log('Request to joins room with id ::: ', gameData.gameId)
 
     let sock = this;
-    this.nickname = data.username;
+    this.nickname = gameData.nickname;
+    console.log('Set nickname to ::: ', this.nickname);
 
-    // get room so we can check if it exists or if it is full
-    let room = io.sockets.adapter.rooms.get(data.gameId);
+    let room = io.sockets.adapter.rooms.get(gameData.gameId);
     console.log('Room ::: ', room);
 
-    // if room does not exists...
     if (!room) {
+        console.log('This game session does not exist');
         this.emit('status', 'This game session does not exist');
         return;
     }
 
-    // if room exists and has not reached capacity...
     if (room.size < 2) {
+        console.log('Room is not full');
+
+        let sock = this;
+        this.nickname = gameData.nickname;
+        console.log('Set nickname to ::: ', this.nickname);
+
         // setting new key on data object
-        data.mySocketId = sock.id;
+        gameData.mySocketId = sock.id;
     
         // join existing room
-        sock.join(data.gameId)
+        sock.join(gameData.gameId)
 
         const players = [];
+        const sockets = []
         for (let item of room) {
+            sockets.push(item);
             let nickname = io.of('/').sockets.get(item).nickname;
             players.push(nickname);
         }
-
-        io.sockets.in(data.gameId).emit('playerJoinsRoom', {success: true, message: `${data.username} joined the room`, players: players});
-
-        // Check if room is at capacity after player joins...
-        if (room.size === 2) {
-            // io.sockets.in(data.gameId).emit('startGame', data.username)
-        }
+        console.log(players);
+        io.sockets.in(gameData.gameId).emit('playerJoinsRoom', {success: true, message: `${gameData.nickname} joined the room`, players: players, sockets: sockets});
 
     // otherwise send an error message to the user...
     } else {
@@ -80,9 +87,21 @@ function playerJoinsRoom(data) {
 
 }
 
-function startGame(data) {
-    io.sockets.in(data.gameId).emit('startGame', {success: true, message: 'Opponent started game'})
+function startGame(gameData) {
+    let room = _.cloneDeep(Array.from(io.sockets.adapter.rooms.get(gameData.gameId)));
+    console.log('startGame room: ',room)
+    const players = [];
+    for (let item of room) {
+        let nickname = io.of('/').sockets.get(item).nickname;
+        players.push(nickname);
+    }
+    io.sockets.in(gameData.gameId).emit('startGame', {success: true, players: players})
 }
+
+function makeMove(gameData) {
+    io.sockets.in(gameData.gameId).emit('opponentMove', gameData);
+}
+
 
 function onDisconnect() {
     console.log('disconnect')

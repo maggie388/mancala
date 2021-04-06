@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './GameBoard.scss';
 
 // compoenents
 import TurnTracker from '../TurnTracker/TurnTracker';
+import { mySocketId, socket } from '../../connections/socket';
 
 
-const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, setCurrentPlayer, setMessage, setFinalScore }) => {
+const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, setMessage, setFinalScore, isMyTurn, setIsMyTurn, pitValues}) => {
 
     /*
     -----------------------------------------
@@ -15,12 +17,6 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, 
     -----------------------------------------
     */
     
-    const startingValues = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
-
-    // state
-    const [pitValues, setPitValues] = useState([...startingValues]);
-    const [isMyTurn, setIsMyTurn] = useState(true);
-
     // game tracking
     const currentPlayerPits = currentPlayer === 'playerOne' ? [0, 1, 2, 3, 4, 5] : [7, 8, 9, 10, 11, 12];
     const opposingPlayerPits = currentPlayer == 'playerOne' ? [7, 8, 9, 10, 11, 12] : [0, 1, 2, 3, 4, 5];
@@ -41,14 +37,20 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, 
         12: 0
     }
 
+    // react-router-dom params
+    const { gameId } = useParams();
+
     const makeMove = (currentIndex) => {
         let count = pitValues[currentIndex];
         let nextIndex = currentIndex + 1;
 
-        let pitValuesCopy = JSON.parse(JSON.stringify(pitValues));
+        let pitValuesProxy = JSON.parse(JSON.stringify(pitValues));
+        let gameInProgressProxy = true;
+        let messageProxy = '';
+        let switchTurn = true;
 
         // make clicked pit 0
-        pitValuesCopy[currentIndex] = 0;
+        pitValuesProxy[currentIndex] = 0;
 
         // distrubute pebbles
         while (count > 0) {
@@ -56,53 +58,69 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, 
                 nextIndex = 0;
             }
             if (nextIndex !== opposingPlayerStore) {
-                pitValuesCopy[nextIndex] = pitValuesCopy[nextIndex] + 1;
+                pitValuesProxy[nextIndex] = pitValuesProxy[nextIndex] + 1;
                 nextIndex++;
                 count--;
             } else {
                 nextIndex++;
             }
         }
-        setPitValues(pitValuesCopy);
+        // setPitValues(pitValuesCopy);
 
         // check for bonus pebbles condition
-        if (currentPlayerPits.includes(nextIndex - 1) && pitValuesCopy[nextIndex -1] === 1) {
+        if (currentPlayerPits.includes(nextIndex - 1) && pitValuesProxy[nextIndex -1] === 1) {
             console.log('last was in current player\'s empty pit');
-            pitValuesCopy[nextIndex - 1] = 0;
-            pitValuesCopy[currentPlayerStore] += 1;
-            let opposingPitContains = pitValuesCopy[oposingPits[nextIndex - 1]];
-            pitValuesCopy[currentPlayerStore] += opposingPitContains;
-            pitValuesCopy[oposingPits[nextIndex - 1]] = 0;
-            setPitValues(pitValuesCopy);
+            pitValuesProxy[nextIndex - 1] = 0;
+            pitValuesProxy[currentPlayerStore] += 1;
+            let opposingPitContains = pitValuesProxy[oposingPits[nextIndex - 1]];
+            pitValuesProxy[currentPlayerStore] += opposingPitContains;
+            pitValuesProxy[oposingPits[nextIndex - 1]] = 0;
+            // setPitValues(pitValuesCopy);
         }
 
         // check game end condition
-        const currentPlayerPitsEmpty = currentPlayerPits.filter((pit) => pitValuesCopy[pit] === 0).length === 6;
-        const opposingPlayerPitsEmpty = opposingPlayerPits.filter((pit) => pitValuesCopy[pit] === 0).length === 6;
+        const currentPlayerPitsEmpty = currentPlayerPits.filter((pit) => pitValuesProxy[pit] === 0).length === 6;
+        const opposingPlayerPitsEmpty = opposingPlayerPits.filter((pit) => pitValuesProxy[pit] === 0).length === 6;
 
         if (currentPlayerPitsEmpty || opposingPlayerPitsEmpty) {
-            setGameInProgress(false);
+            gameInProgress = false;
         }
 
         // check next turn condition
+        
         if (nextIndex - 1 === currentPlayerStore) {
-            setMessage(`The last pebble was placed in ${players[currentPlayer]}'s mancala. ${players[currentPlayer]} goes again!`);
-            return;
+            messageProxy = `The last pebble was placed in ${players[currentPlayer]}'s mancala. ${players[currentPlayer]} goes again!`;
+            switchTurn = false;
+            
+        } 
+        if (isMyTurn) {
+            socket.emit('makeMove', { 
+                gameId, 
+                gameInProgress: gameInProgressProxy,
+                message: messageProxy,
+                pitValues: pitValuesProxy, 
+                switchTurn, 
+                fromSocket: mySocketId, 
+                currentPlayer: switchTurn ? currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne' : currentPlayer
+               });
+            // setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
+            if (switchTurn) {
+                setIsMyTurn(false);
+            }
         }
-        setCurrentPlayer(currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne');
     }
 
     const playerOneMove = (currentIndex) => {
-        if (currentPlayer === 'playerOne' && isMyTurn === true && pitValues[currentIndex] !== 0 && gameInProgress) {
+        if (currentPlayer === 'playerOne' && isMyTurn && pitValues[currentIndex] !== 0 && gameInProgress) {
             makeMove(currentIndex)
         }
     }
 
     const playerTwoMove = (currentIndex) => {
-        if (currentPlayer === 'playerTwo' && isMyTurn === true && pitValues[currentIndex] !== 0 && gameInProgress) {
+        if (currentPlayer === 'playerTwo' && isMyTurn && pitValues[currentIndex] !== 0 && gameInProgress) {
             makeMove(currentIndex)
         }
-    }
+    };
 
     useEffect(() => {
         setMessage(`it's ${players[currentPlayer]}'s turn`)
@@ -127,7 +145,7 @@ const GameBoard = ({ players, gameInProgress, setGameInProgress, currentPlayer, 
             <div className='game-board__pit-wrapper'>
                 <div className='game-board__player-pits'>
                     <div 
-                        className={currentPlayer === 'playerOne' && isMyTurn  && gameInProgress? 'game-board__pit--active' : 'game-board__pit'} 
+                        className={currentPlayer === 'playerOne' && isMyTurn  && gameInProgress ? 'game-board__pit--active' : 'game-board__pit'} 
                         onClick={() => playerOneMove(5)}
                         >
                         {new Array(pitValues[5]).fill(undefined).map((_, i) => <div key={i} className='game-board__pebble'></div>)}

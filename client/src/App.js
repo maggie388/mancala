@@ -8,7 +8,8 @@ import GameBoard from './components/GameBoard/GameBoard';
 
 const App = () => {
   // state
-  const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [isCreator, setIsCreator] = useState(false);
 
   return (
     <main className='app'>
@@ -17,10 +18,17 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path='/'>
-              <Home setUsername={setUsername} />
+              <Home 
+                setNickname={setNickname} 
+                setIsCreator={setIsCreator} 
+              />
           </Route>
           <Route exact path='/game/:gameId'>
-              <Room username={username} setUsername={setUsername} />
+              <Room 
+                nickname={nickname} 
+                setNickname={setNickname} 
+                isCreator={isCreator} 
+              />
           </Route>
         </Switch>
       </Router>
