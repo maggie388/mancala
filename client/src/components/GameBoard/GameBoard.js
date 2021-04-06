@@ -82,8 +82,8 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setMessage, setFina
 
         if (currentPlayerPitsEmpty || opposingPlayerPitsEmpty) {
             gameInProgressProxy = false;
-            const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
-            const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
+            const playerOneScore = pitValuesProxy.slice(0, 7).reduce((a, b) => a + b);
+            const playerTwoScore = pitValuesProxy.slice(7).reduce((a, b) => a + b);
             const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
             finalScoreProxy = [playerOneScore, playerTwoScore];
             messageProxy = `Game Over! ${winner}`;
