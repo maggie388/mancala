@@ -7,7 +7,7 @@ import TurnTracker from '../TurnTracker/TurnTracker';
 import { mySocketId, socket } from '../../connections/socket';
 
 
-const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, setMessage, setFinalScore, isMyTurn, setIsMyTurn, pitValues}) => {
+const GameBoard = ({ players, gameInProgress, currentPlayer, setMessage, setFinalScore, isMyTurn, setIsMyTurn, pitValues}) => {
 
     /*
     -----------------------------------------
@@ -45,8 +45,9 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
         let nextIndex = currentIndex + 1;
 
         let pitValuesProxy = JSON.parse(JSON.stringify(pitValues));
-        let gameInProgressProxy = true;
+        let gameInProgressProxy = gameInProgress;
         let messageProxy = '';
+        let finalScoreProxy = '';
         let switchTurn = true;
 
         // make clicked pit 0
@@ -80,11 +81,16 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
         const opposingPlayerPitsEmpty = opposingPlayerPits.filter((pit) => pitValuesProxy[pit] === 0).length === 6;
 
         if (currentPlayerPitsEmpty || opposingPlayerPitsEmpty) {
-            gameInProgress = false;
+            gameInProgressProxy = false;
+            const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
+            const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
+            const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
+            finalScoreProxy = [playerOneScore, playerTwoScore];
+            messageProxy = `Game Over! ${winner}`;
         }
 
         // check next turn condition
-        if (nextIndex - 1 === currentPlayerStore) {
+        if (gameInProgressProxy && nextIndex - 1 === currentPlayerStore) {
             messageProxy = `The last pebble was placed in ${players[currentPlayer]}'s mancala. ${players[currentPlayer]} goes again!`;
             switchTurn = false;
             
@@ -94,6 +100,7 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
             socket.emit('makeMove', { 
                 gameId, 
                 gameInProgress: gameInProgressProxy,
+                finalScore: finalScoreProxy,
                 message: messageProxy || `it's ${players[currentPlayerProxy]}'s turn`,
                 pitValues: pitValuesProxy, 
                 switchTurn, 
@@ -118,15 +125,15 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
         }
     };
 
-    useEffect(() => {
-        if (!gameInProgress) {
-            const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
-            const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
-            const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
-            setFinalScore([playerOneScore, playerTwoScore]);
-            setMessage(`Game Over! ${winner}`);
-        }
-    }, [gameInProgress]);
+    // useEffect(() => {
+    //     if (!gameInProgress) {
+    //         const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
+    //         const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
+    //         const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
+    //         setFinalScore([playerOneScore, playerTwoScore]);
+    //         setMessage(`Game Over! ${winner}`);
+    //     }
+    // }, [gameInProgress]);
 
     return (
         <>

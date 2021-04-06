@@ -81,6 +81,7 @@ const Room = ({ nickname, setNickname, isCreator }) => {
         socket.on('opponentMove', (gameData) => {
             setPitValues(gameData.pitValues);
             setGameInProgress(gameData.gameInProgress);
+            setFinalScore(gameData.finalScore);
             setMessage(gameData.message);
             setCurrentPlayer(gameData.currentPlayer)
             if (gameData.fromSocket !== mySocketId && gameData.switchTurn) {
@@ -123,8 +124,8 @@ const Room = ({ nickname, setNickname, isCreator }) => {
                 message={message} 
                 finalScore={finalScore}
             />
-            {players.playerTwo && !gameInProgress && <button onClick={startGame}>Start Game</button>}
-            {gameInProgress && 
+            {players.playerTwo && !gameStarted && <button onClick={startGame}>Start Game</button>}
+            {gameStarted && 
             <GameBoard 
                 players={players} 
                 gameInProgress={gameInProgress} 
