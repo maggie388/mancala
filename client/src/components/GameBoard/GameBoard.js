@@ -7,7 +7,7 @@ import TurnTracker from '../TurnTracker/TurnTracker';
 import { mySocketId, socket } from '../../connections/socket';
 
 
-const GameBoard = ({ players, gameInProgress, currentPlayer, setMessage, setFinalScore, isMyTurn, setIsMyTurn, pitValues}) => {
+const GameBoard = ({ players, gameInProgress, currentPlayer, isMyTurn, setIsMyTurn, pitValues}) => {
 
     /*
     -----------------------------------------
@@ -17,7 +17,7 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setMessage, setFina
     -----------------------------------------
     */
     
-    // game tracking
+    // game tracking helpers
     const currentPlayerPits = currentPlayer === 'playerOne' ? [0, 1, 2, 3, 4, 5] : [7, 8, 9, 10, 11, 12];
     const opposingPlayerPits = currentPlayer == 'playerOne' ? [7, 8, 9, 10, 11, 12] : [0, 1, 2, 3, 4, 5];
     const currentPlayerStore = currentPlayer === 'playerOne' ? 6 : 13;
@@ -124,16 +124,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setMessage, setFina
             makeMove(currentIndex)
         }
     };
-
-    // useEffect(() => {
-    //     if (!gameInProgress) {
-    //         const playerOneScore = pitValues.slice(0, 7).reduce((a, b) => a + b);
-    //         const playerTwoScore = pitValues.slice(7).reduce((a, b) => a + b);
-    //         const winner = playerOneScore > playerTwoScore ? 'Player one wins!' : playerOneScore === playerTwoScore ? 'It\'s a tie!' : 'Player two wins!';
-    //         setFinalScore([playerOneScore, playerTwoScore]);
-    //         setMessage(`Game Over! ${winner}`);
-    //     }
-    // }, [gameInProgress]);
 
     return (
         <>

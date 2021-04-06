@@ -21,16 +21,18 @@ const Room = ({ nickname, setNickname, isCreator }) => {
    
     // state
     const [players, setPlayers] = useState([]);
+
     const [isRoomFull, setIsRoomFull] = useState(false);
-    const [gameInProgress, setGameInProgress] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
+    
+    const [gameInProgress, setGameInProgress] = useState(false);
+    const [finalScore, setFinalScore] = useState([0, 0]);
 
     // game play state 
     const [pitValues, setPitValues] = useState([...startingValues]);
     const [currentPlayer, setCurrentPlayer] = useState('playerOne');
     const [isMyTurn, setIsMyTurn] = useState(false);
     const [message, setMessage] = useState(`waiting for opponent`);
-    const [finalScore, setFinalScore] = useState([0, 0]);
 
     // react-router-dom params
     const { gameId } = useParams();
