@@ -68,7 +68,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
 
         // check for bonus pebbles condition
         if (currentPlayerPits.includes(nextIndex - 1) && pitValuesProxy[nextIndex -1] === 1) {
-            console.log('last was in current player\'s empty pit');
             pitValuesProxy[nextIndex - 1] = 0;
             pitValuesProxy[currentPlayerStore] += 1;
             let opposingPitContains = pitValuesProxy[oposingPits[nextIndex - 1]];
@@ -91,14 +90,15 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
             
         } 
         if (isMyTurn) {
+            let currentPlayerProxy = switchTurn ? currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne' : currentPlayer;
             socket.emit('makeMove', { 
                 gameId, 
                 gameInProgress: gameInProgressProxy,
-                message: messageProxy,
+                message: messageProxy || `it's ${players[currentPlayerProxy]}'s turn`,
                 pitValues: pitValuesProxy, 
                 switchTurn, 
                 fromSocket: mySocketId, 
-                currentPlayer: switchTurn ? currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne' : currentPlayer
+                currentPlayer: currentPlayerProxy
                });
             if (switchTurn) {
                 setIsMyTurn(false);
@@ -117,10 +117,6 @@ const GameBoard = ({ players, gameInProgress, currentPlayer, setCurrentPlayer, s
             makeMove(currentIndex)
         }
     };
-
-    useEffect(() => {
-        setMessage(`it's ${players[currentPlayer]}'s turn`)
-    }, [currentPlayer]);
 
     useEffect(() => {
         if (!gameInProgress) {
